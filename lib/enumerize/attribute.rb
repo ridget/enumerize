@@ -1,6 +1,6 @@
 module Enumerize
   class Attribute
-    attr_reader :name, :values, :default_value, :i18n_scope, :value_hash
+    attr_reader :name, :values, :default_value, :i18n_scope, :mappings
 
     def initialize(klass, name, options={})
       raise ArgumentError, ':in option is required' unless options[:in]
@@ -15,6 +15,7 @@ module Enumerize
       @values = Array(options[:in]).map { |v| value_class.new(self, *v) }
 
       @value_hash = Hash[@values.map { |v| [v.value.to_s, v] }]
+      @mappings = options[:in]
       @value_hash.merge! Hash[@values.map { |v| [v.to_s, v] }]
 
       if options[:i18n_scope]
